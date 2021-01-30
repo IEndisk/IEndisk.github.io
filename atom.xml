@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://iendisk.github.io</id>
     <title>桑染 Endisk</title>
-    <updated>2021-01-30T05:38:13.880Z</updated>
+    <updated>2021-01-30T06:12:54.316Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://iendisk.github.io"/>
     <link rel="self" href="https://iendisk.github.io/atom.xml"/>
@@ -10,6 +10,20 @@
     <logo>https://iendisk.github.io/images/avatar.png</logo>
     <icon>https://iendisk.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 桑染 Endisk</rights>
+    <entry>
+        <title type="html"><![CDATA[[PPT] Scarsdale Desktop 1.0发布啦啦]]></title>
+        <id>https://iendisk.github.io/post/ppt-scarsdale-desktop-10-fa-bu-la-la/</id>
+        <link href="https://iendisk.github.io/post/ppt-scarsdale-desktop-10-fa-bu-la-la/">
+        </link>
+        <updated>2021-01-30T06:03:18.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[PPT] XDPA Case发布]]></title>
+        <id>https://iendisk.github.io/post/ppt-xdpa-case-fa-bu/</id>
+        <link href="https://iendisk.github.io/post/ppt-xdpa-case-fa-bu/">
+        </link>
+        <updated>2021-01-30T05:47:01.000Z</updated>
+    </entry>
     <entry>
         <title type="html"><![CDATA[[PPT] Snack Ice ( 版本号 1.0.0 )]]></title>
         <id>https://iendisk.github.io/post/snack-ice/</id>
