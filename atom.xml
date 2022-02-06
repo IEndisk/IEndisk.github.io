@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://iendisk.github.io</id>
-    <title>桑染 Endisk</title>
-    <updated>2022-02-06T04:15:02.647Z</updated>
+    <title>北寂-Endisk</title>
+    <updated>2022-02-06T04:39:24.691Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://iendisk.github.io"/>
     <link rel="self" href="https://iendisk.github.io/atom.xml"/>
-    <subtitle>桑中有染，心亦自然</subtitle>
+    <subtitle>Endisk，现名北寂。代表作：Linex TV、Firenze OS</subtitle>
     <logo>https://iendisk.github.io/images/avatar.png</logo>
     <icon>https://iendisk.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2022, 桑染 Endisk</rights>
+    <rights>All rights reserved 2022, 北寂-Endisk</rights>
     <entry>
         <title type="html"><![CDATA[[PPT] Scarsdale Desktop 1.0发布啦啦]]></title>
         <id>https://iendisk.github.io/post/ppt-scarsdale-desktop-10-fa-bu-la-la/</id>
