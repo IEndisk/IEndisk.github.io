@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://iendisk.github.io</id>
     <title>北寂-Endisk</title>
-    <updated>2022-02-06T06:39:54.701Z</updated>
+    <updated>2022-02-06T06:52:54.107Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://iendisk.github.io"/>
     <link rel="self" href="https://iendisk.github.io/atom.xml"/>
@@ -11,6 +11,13 @@
     <icon>https://iendisk.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, 北寂-Endisk</rights>
     <entry>
+        <title type="html"><![CDATA[【框架】莱涅克斯组成]]></title>
+        <id>https://iendisk.github.io/UGG9hhewd/</id>
+        <link href="https://iendisk.github.io/UGG9hhewd/">
+        </link>
+        <updated>2022-02-06T06:41:00.000Z</updated>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[【放送】Linex TV 2022 全新视觉包装演绎]]></title>
         <id>https://iendisk.github.io/Al3hSzPvp/</id>
         <link href="https://iendisk.github.io/Al3hSzPvp/">
@@ -18,7 +25,7 @@
         <updated>2022-02-06T06:36:15.000Z</updated>
     </entry>
     <entry>
-        <title type="html"><![CDATA[【转推】关于 赤磷工艺 上关于 Linex TV 的介绍]]></title>
+        <title type="html"><![CDATA[【转推】赤磷工艺 中关于 Linex TV 的介绍]]></title>
         <id>https://iendisk.github.io/Chiling/</id>
         <link href="https://iendisk.github.io/Chiling/">
         </link>
@@ -72,12 +79,5 @@
         <link href="https://iendisk.github.io/Scarsdale1/">
         </link>
         <updated>2020-05-15T06:03:18.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[【PPT OS】 XDPA Case发布]]></title>
-        <id>https://iendisk.github.io/XDPA Case/</id>
-        <link href="https://iendisk.github.io/XDPA Case/">
-        </link>
-        <updated>2020-04-04T05:47:01.000Z</updated>
     </entry>
 </feed>
