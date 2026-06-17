@@ -1,0 +1,1543 @@
+/* =========================
+   字体
+========================= */
+@font-face{
+    font-family:'OPPOSans';
+    src:url('../fonts/OPPOSans-Regular.ttf') format('truetype');
+    font-weight:400;
+}
+@font-face{
+    font-family:'OPPOSans';
+    src:url('../fonts/OPPOSans-Medium.ttf') format('truetype');
+    font-weight:500;
+}
+@font-face{
+    font-family:'OPPOSans';
+    src:url('../fonts/OPPOSans-Bold.ttf') format('truetype');
+    font-weight:700;
+}
+@font-face{
+    font-family:'思源宋体';
+    src:url('../fonts/思源宋体.otf') format('truetype');
+    font-weight:700;
+}
+
+/* =========================
+   主题变量
+========================= */
+:root{
+    --bg:#ffffff;
+    --card:rgba(255,255,255,.75);
+    --text:#111111;
+    --sub:#666666;
+    --border:rgba(0,0,0,.08);
+    --shadow:0 12px 40px rgba(0,0,0,.08);
+}
+.dark{
+    --bg:#0d1117;
+    --card:rgba(22,27,34,.75);
+    --text:#f0f6fc;
+    --sub:#9ca3af;
+    --border:rgba(255,255,255,.08);
+    --shadow:0 12px 40px rgba(0,0,0,.4);
+}
+
+/* =========================
+   基础全局
+========================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+html{
+    scroll-behavior:smooth;
+}
+body{
+    font-family:'OPPOSans',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+    transition:.3s;
+}
+
+/* =========================
+   背景光球 + 光标光晕（底层常驻）
+========================= */
+.bg{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    overflow:hidden;
+}
+.ball{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(120px);
+    animation: float1 20s ease-in-out infinite;
+}
+.ball-1{
+    width:900px;
+    height:900px;
+    left:-350px;
+    top:-350px;
+    animation-duration:24s;
+    background:linear-gradient(135deg, #ff75df, #ffd0a7, #00bfff);
+    opacity:.45;
+}
+.ball-2{
+    width:800px;
+    height:800px;
+    right:-250px;
+    top:-150px;
+    animation-duration:18s;
+    animation-direction:reverse;
+    background:#b28cff;
+    opacity:.35;
+}
+/* 光球动画 */
+@keyframes float1{
+    0%{ transform: translate(0,0) scale(1); }
+    25%{ transform: translate(80px,-60px) scale(1.1); }
+    50%{ transform: translate(-50px,80px) scale(.95); }
+    75%{ transform: translate(100px,50px) scale(1.08); }
+    100%{ transform: translate(0,0) scale(1); }
+}
+/* 光标跟随光晕 */
+.cursor-glow{
+    position:fixed;
+    width:350px;
+    height:350px;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:-1;
+    filter:blur(100px);
+    background:radial-gradient(circle, rgba(0,191,255,.35), transparent 70%);
+    transform:translate(-50%,-50%);
+    transition:left .12s linear, top .12s linear;
+}
+
+/* =========================
+   开场动画层 #intro（最高层级）
+========================= */
+#intro{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:var(--bg);
+    transition:opacity 0.8s ease;
+}
+/* 开场层淡出 */
+#intro.intro-hide{
+    animation:introOut .8s ease forwards;
+}
+@keyframes introOut{
+    to{
+        opacity:0;
+        transform:translateY(-30px);
+        pointer-events:none;
+    }
+}
+/* 背景淡英文 */
+.intro-bg{
+    position:absolute;
+    font-size:5rem;
+    opacity:.05;
+    text-align:center;
+    line-height:1.2;
+    animation:floatText 6s ease-in-out infinite;
+}
+@keyframes floatText{
+    0%{ transform:translateY(0); }
+    50%{ transform:translateY(-10px); }
+    100%{ transform:translateY(0); }
+}
+/* 主标题 欢迎访问 */
+.intro-main{
+    font-family:'思源宋体';
+    font-size:clamp(4rem,10vw,8rem);
+    font-weight:700;
+    animation:drawText 2s ease forwards;
+}
+@keyframes drawText{
+    from{
+        opacity:0;
+        letter-spacing:20px;
+        transform:scale(.9);
+    }
+    to{
+        opacity:1;
+        letter-spacing:0;
+        transform:scale(1);
+    }
+}
+/* 底部英文副标题 */
+.intro-sub{
+    position:absolute;
+    bottom:18%;
+    letter-spacing:4px;
+    opacity:.6;
+}
+
+/* =========================
+   主体容器 #app 入场动画（核心修复重复样式）
+========================= */
+#app{
+    opacity:0;
+    transform:translateY(30px);
+    pointer-events:none;
+    transition:all 1.2s ease;
+}
+#app.show{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+}
+
+/* =========================
+   导航栏
+========================= */
+.navbar{
+    border:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6vw;
+    z-index:1000;
+}
+/* 导航右侧容器 */
+.right-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px; /* 按钮之间统一间距 */
+}
+/* 导航毛玻璃背景 */
+.navbar::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    background:linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.45), rgba(255,255,255,0));
+    z-index:-1;
+}
+.dark .navbar::before{
+    background:linear-gradient(180deg, rgba(13,17,23,.85), rgba(13,17,23,.55), rgba(13,17,23,0));
+}
+/* 导航底部分割线 */
+.navbar::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:1px;
+    background:rgba(255,255,255,.15);
+}
+.dark .navbar::after{
+    background:rgba(255,255,255,.08);
+}
+/* 滚动增强毛玻璃 */
+.navbar.scrolled::before{
+    backdrop-filter:blur(35px);
+    background:rgba(255,255,255,.75);
+}
+.dark .navbar.scrolled::before{
+    backdrop-filter:blur(35px);
+    background:rgba(13, 17, 23, 0.48);
+}
+.logo{
+    font-size:22px;
+    font-weight:700;
+}
+/* 导航栏指针扫动胶囊遮罩 */
+.nav-links {
+    display:flex;
+    align-items:center;
+    gap:40px; /* 固定链接之间40px间距 */
+}
+
+.nav-links a{
+    position:relative;
+    /* 固定内边距，胶囊大小永久不变，不会变长变窄 */
+    padding:10px 18px;
+    border-radius:999px;
+    transition:.3s;
+    color: var(--text);
+    text-decoration: none;
+    /* 关键：宽度由内容+padding固定，不自动拉伸 */
+    width: fit-content;
+     display: flex;
+    align-items: center; /* 文字在胶囊内部垂直居中 */
+    justify-content: center;
+}
+
+/* 浅色悬浮底色，仅改颜色，不改变尺寸 */
+.nav-links a:hover{
+    background: rgba(0, 0, 0, 0.08);
+    backdrop-filter:blur(10px);
+}
+.dark .nav-links a:hover{
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(10px);
+}
+
+/* 主题切换按钮 统一类名 icon-btn / theme-btn 合并 */
+.icon-btn, .theme-btn{
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    background:var(--card);
+    backdrop-filter:blur(10px);
+    transition:.3s;
+}
+
+/* 主题切换图标 */
+.theme-icon {
+    width: 22px;
+    height: 22px;
+}
+.theme-icon path {
+    fill: var(--text);
+}
+
+/* 原有.theme-btn保证居中不变 */
+.theme-btn{
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    background:var(--card);
+    backdrop-filter:blur(10px);
+    transition:.3s;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 大标题禁止复制 */
+.my-projects, .section-title {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+/* 导航栏禁止复制 */
+.navbar {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* 所有项目卡片图片禁止拖拽 */
+.card-img {
+  pointer-events: none; /* 图片完全屏蔽鼠标操作，无法右键/拖拽 */
+  /* 或者只用禁止拖拽 */
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+/* =========================
+   Hero 首屏
+========================= */
+.hero{
+    min-height:100vh;
+    width:min(1400px,90%);
+    margin:auto;
+    display:flex;
+    align-items:center;
+}
+.hero-content{
+    max-width:1000px;
+}
+.quote{
+    font-size:clamp(1.4rem,2vw,3rem);
+    color:var(--sub);
+    font-style:italic;
+    font-weight:400;
+    margin-bottom:40px;
+}
+.hero-title{
+    font-size:clamp(4rem,10vw,8rem);
+    line-height:1;
+    font-weight:700;
+    margin-bottom:20px;
+}
+.hero-subtitle{
+    font-size:clamp(1.2rem,2vw,2.4rem);
+    color:var(--sub);
+    margin-bottom:50px;
+}
+.hero-actions{
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+}
+.btn{
+    text-decoration:none;
+    padding:16px 32px;
+    border-radius:999px;
+    transition:.3s;
+}
+.btn:hover{
+    transform:translateY(-4px);
+}
+.btn-primary{
+    background:#111;
+    color:white;
+}
+.btn-secondary{
+    border:1px solid var(--border);
+    color:var(--text);
+}
+
+/* =========================
+   通用区块 Section
+========================= */
+.section{
+    width:min(1400px,90%);
+    margin:auto;
+    padding:120px 0;
+}
+/* 标题基础 */
+.section-title {
+  text-align: center;
+  font-size: 64px;
+  margin: 40px 0;
+}
+
+/* 卡片外层容器，三栏均分 */
+.project-wrap{
+
+    display:flex;
+
+    gap:40px;
+
+    width:max-content;
+
+    min-width:100%;
+
+    justify-content:center;
+
+    padding:20px 40px;
+
+    overflow-x:auto;
+}
+/* 隐藏滚动条 */
+.project-wrap::-webkit-scrollbar{
+    display:none;
+}
+
+/* 单张卡片容器 */
+.project-card {
+  width: 400px; /* 直接改这个数字控制卡片宽度 */
+  height: 450px;
+  flex: none; /* 必须加，取消弹性自动拉伸 */
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+    transition: all 0.3s ease;
+  /* 默认无外发光 */
+  box-shadow: 0 0 0 rgba(100, 160, 255, 0);
+}
+
+/* 图片基础样式 */
+.card-img {
+  width: 400px;
+  height: 100%;
+  object-fit: cover;
+  /* 过渡动画统一写在这里 */
+  transition: none;
+}
+
+/* 悬浮交互：卡片整体放大 + 外部蓝色光晕 */
+.project-card:hover {
+  transform: scale(1.04); /* 整张卡片轻微放大，图片不动 */
+  /* 外部光晕，蓝色柔和发光，贴合你Firenze OS蓝色主题 */
+  box-shadow: 0 0 10px 10px rgba(174, 174, 174, 0.095);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .project-wrap {
+    flex-direction: column;
+    align-items: center;
+  }
+  .section-title {
+    font-size: 40px;
+  }
+  .project-card {
+    width: 90%;
+    max-width: 360px;
+    height: auto;
+  }
+}
+
+/* 网格布局 */
+.about-grid,
+.project-grid,
+.article-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:24px;
+}
+
+/* 卡片样式 */
+.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:28px;
+    padding:30px;
+    backdrop-filter:blur(20px);
+    box-shadow:var(--shadow);
+    transition:.3s;
+}
+.card:hover{
+    transform:translateY(-8px);
+}
+.card h3{
+    margin-bottom:15px;
+    font-size:1.3rem;
+    font-weight:700;
+}
+.card p{
+    line-height:1.8;
+    color:var(--sub);
+    font-weight:400;
+}
+.article-date{
+    margin-top:16px;
+    color:var(--sub);
+    font-size:.9rem;
+}
+
+/* =========================
+   页脚 Footer
+========================= */
+footer{
+    padding:100px 20px;
+    text-align:center;
+    color:var(--sub);
+}
+
+/* ========================================================
+   一、组件基础定位：使其与返回顶部按钮水平中线完美对齐
+   ======================================================== */
+.custom-audio-wrapper {
+  position: fixed;
+  right: 40px;
+  bottom: 25px; /* 与 top-btn 保持一致 */
+  z-index: 2000;
+  display: block !important;
+  box-sizing: border-box;
+  height: 42px; /* 锁定容器高度与按钮高度一致 */
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 当页面下滚、返回顶部按钮浮现时：向左平移，贴在返回顶部按钮的左侧 */
+.custom-audio-wrapper.avoid-top {
+  right: 145px; 
+}
+
+/* 悬浮球小按钮：参数完全对齐原站的 .circle-btn */
+.custom-audio-sphere {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: .3s;
+  padding: 0;
+  flex-shrink: 0;
+}
+.custom-audio-sphere:hover {
+  transform: translateY(-2px);
+  opacity: 0.85;
+}
+
+/* ========================================================
+   播放器卡片面板：采用绝对垂直两行分行排版，彻底隔绝错位
+   ======================================================== */
+.custom-player-panel {
+  position: absolute;
+  bottom: 58px; 
+  right: 0;
+  
+  /* ─── 长宽控制 ─── */
+  width: 400px;   /* 【可在此处调卡片总宽度】 */
+  height: 143px;  /* 【可在此处调卡片总高度】 */
+  
+  border-radius: 24px;
+  padding: 20px;
+  box-sizing: border-box;
+  background: var(--card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  
+  /* 强制两行网格排版，阻断进度条错位上窜 */
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  align-items: stretch !important;
+  
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 触发鼠标悬停交互 */
+.custom-audio-wrapper:hover .custom-player-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* ========================================================
+   上半部分排版结构（封面 + 歌曲文本 + 右侧按键）
+   ======================================================== */
+.custom-player-top {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* 歌曲封面 */
+.custom-album-cover {
+  width: 70px;
+  height: 70px;
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(0,0,0,0.05);
+}
+.custom-album-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 1. 歌名容器：只负责布局，不负责遮罩 */
+.custom-track-info {
+    margin-left: 14px;
+    flex-grow: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.custom-track-info span {
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+}
+.custom-status-lbl {
+  font-size: 15px;
+  color: var(--sub);
+  opacity: 0.7;
+  margin-bottom: 3px;
+}
+/* 2. 歌名文字：默认静止 */
+.custom-title-lbl {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+    display: inline-block;
+    white-space: nowrap;
+    width: max-content; /* 关键：让宽度等于内容宽度 */
+    padding-right: 50px; /* 给滚动留缓冲空间 */
+}
+/* 3. 长歌名才应用的遮罩和滚动 */
+.custom-title-lbl.scroll {
+    animation: scroll-text linear infinite;
+}
+@keyframes scroll-text {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* 6. 歌手名不需要遮罩和滚动 */
+.custom-artist-lbl {
+    font-size: 12px;
+    color: var(--sub);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 歌手名用省略号，不用滚动 */
+}
+
+/* 右侧控制区按键排版：确保完全垂直居中 */
+.custom-controls-box {
+  margin-left: 10px;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 20px; /* 【在这里修改播放键和下一曲键的距离】 */
+  flex-shrink: 0;
+  margin-right: 5px;
+}
+/* 下一曲按钮图标：浅色模式下强制反转成黑色，深色模式保持原样 */
+.custom-btn-arrow {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  transition: transform 0.2s, filter 0.3s;
+  
+  /* 默认浅色模式（body没有.dark时）：将浅色图标反转成深色/黑色 */
+  filter: invert(0.8) brightness(0.2); 
+}
+/* 当处于深色模式时：恢复白色/原本的浅色 */
+.dark .custom-btn-arrow {
+  filter: none; 
+}
+
+.custom-btn-arrow:hover {
+  transform: scale(1.1);
+}
+/* 播放/暂停大球 */
+.custom-btn-play {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+/* 播放按钮背景：彻底改成正圆，且无缝适配浅色/深色主题反换色 */
+.custom-play-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; /* 100% 正圆 */
+background: var(--main-color, var(--text)); /* 浅色模式下为全黑圆圈，深色模式下为全白圆圈 */
+  opacity: 0.95;
+  transition: background 0.3s ease, opacity 0.2s, transform 0.2s;
+  z-index: 1;
+}
+.custom-btn-play:hover .custom-play-bg {
+  opacity: 1;
+  transform: scale(1.05);
+}
+/* ========================================================
+   内嵌 SVG 图标颜色控制逻辑（彻底剔除图片干扰）
+   ======================================================== */
+.custom-icon-svg {
+  position: absolute;
+  z-index: 2;
+  transition: opacity 0.2s ease, transform 0.2s ease, fill 0.3s ease;
+  
+  /* 【非常重要】默认取色机制：
+     由于歌曲封面颜色多种多样（可能深可能浅），所以最稳妥好看的做法是：
+     只要按钮使用的是【封面彩色】，里面的图标在浅色、深色模式下统一全部填为【纯白色】，反差感最高，最清晰。
+  */
+  fill: #ffffff; 
+}
+
+/* 智能兜底：如果还没加载出封面、或封面没颜色时（使用的是系统的黑白兜底 var(--text)） */
+/* 1. 浅色模式下：大球是全黑的，里面图标填充为纯白 */
+.custom-icon-svg { fill: #ffffff; }
+/* 2. 深色模式下：大球是全白的，里面图标反转填充为纯黑 */
+.dark .custom-icon-svg { fill: #111111; }
+
+/* 智能判定：只要大球加载出了【封面彩色】，内部图标不管在什么模式下，全强制锁定为最高清的【纯白色】 */
+:root[style*="--main-color"] .custom-icon-svg,
+html[style*="--main-color"] .custom-icon-svg,
+body[style*="--main-color"] .custom-icon-svg,
+.custom-audio-wrapper[style*="--main-color"] .custom-icon-svg {
+  fill: #ffffff !important;
+}
+
+/* ========================================================
+   播放状态 与 暂停状态 图标相互隐藏/显示的变换动画
+   ======================================================== */
+.icon-play-state {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+.icon-pause-state {
+  opacity: 0;
+  transform: scale(0.5) rotate(-10deg);
+}
+
+/* 播放中：显示暂停，隐藏播放 */
+.custom-btn-play.is-playing .icon-play-state {
+  opacity: 0;
+  transform: scale(0.5) rotate(10deg);
+}
+.custom-btn-play.is-playing .icon-pause-state {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+/* ========================================================
+   三、净化版条形进度条（已去除发光及阴影）
+   ======================================================== */
+.custom-player-bottom {
+display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  width: 100% !important; /* 独立满宽行，拒绝上去卡位 */
+  gap: 10px;
+  margin-top: auto; /* 自动顶到最下方 */
+  box-sizing: border-box;
+}
+.custom-time-lbl {
+  font-size: 12px;
+  color: var(--sub);
+  font-family: 'OPPOSans', sans-serif;
+  width: 32px;
+  flex-shrink: 0;
+}
+.custom-progress-container {
+  position: relative;
+  flex-grow: 1;
+  height: 6px;
+  display: flex;
+  align-items: center;
+}
+.custom-progress-track {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--border);
+  opacity: 0.8;
+}
+.custom-progress-fill {
+  position: absolute;
+  height: 100%;
+  left: 0;
+  border-radius: 3px;
+  background: var(--main-color, var(--text)); /* 提取封面色或跟随主题字色 */
+  transition: width 0.1s linear;
+  box-shadow: none !important; /* 彻底净化阴影发光 */
+}
+
+/* ========== Global 质感磨砂玻璃播放器 UI 核心 ========== */
+.music-player {
+  max-width: 379px;
+  width: 340px;
+  height: 143px;
+  border-radius: 25px;
+  background-color: #1c1c1e;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 40%, rgba(153, 153, 153, 0.05) 100%);
+  backdrop-filter: blur(10px);
+  box-shadow: inset -0.5px -0.5px 1px 0px rgba(255, 255, 255, 0.2), inset 0.5px 0.5px 1.5px 0px rgba(255, 255, 255, 0.3), 0 10px 30px rgba(0,0,0,0.3);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.player-top {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.album-cover {
+  width: 70px;
+  height: 70px;
+  border-radius: 15px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.album-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.track-info {
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #ffffff;
+  flex-grow: 1;
+  min-width: 0;
+  text-align: left;
+}
+.track-info span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+.track-info .status {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 4px;
+}
+.track-info .title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.track-info .artist {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.controls {
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.btn-prev {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.btn-prev:hover {
+  transform: scale(1.1);
+}
+
+.btn-play {
+  position: relative;
+  width: 47px;
+  height: 47px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.play-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.play-icon {
+  position: absolute;
+  width: 19px;
+  height: 21px;
+  z-index: 1;
+  margin-left: 2px;
+}
+
+/* 底部时间与条形进度条 */
+.player-bottom {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+}
+.time-text {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: sans-serif;
+  width: 35px;
+  flex-shrink: 0;
+}
+.progress-bar {
+  position: relative;
+  flex-grow: 1;
+  height: 8px;
+  display: flex;
+  align-items: center;
+}
+.progress-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  object-fit: fill;
+}
+.progress-fill {
+  position: absolute;
+  height: 100%;
+  left: 0;
+  border-radius: 4px;
+  background: var(--main-color, #ffffff);
+  box-shadow: 0 0 8px var(--main-color, rgba(255,255,255,0.5));
+  transition: width 0.1s linear;
+}
+
+/* ========================================================
+   二、返回顶部字体强制使用OPPO Sans
+   ======================================================== */
+.top-btn {
+    /* 核心：强制优先使用OPPO Sans */
+    font-family: "OPPO Sans", system-ui, sans-serif;
+    font-weight: 500; /* 中等粗细，匹配页面视觉 */
+    font-size: 36px;  /* 按需改字号 */
+
+    /* 外观样式，匹配你截图圆角白框 */
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 20px 60px;
+    border-radius: 9999px; /* 胶囊大圆角 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* 深色模式自动反转底色文字 */
+body.dark .top-btn {
+    background-color: #1c1c1e;
+    color: #f2f2f2;
+}
+
+/* 悬浮轻微放大动效（可选） */
+.top-btn:hover {
+    transform: scale(1.04);
+}
+
+/* 返回顶部按钮（仅滚动显示隐藏） */
+.top-btn{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    border-radius:9999px;
+    border:none;
+    cursor:pointer;
+    background:var(--card);
+    backdrop-filter:blur(20px);
+    box-shadow:var(--shadow);
+    width: auto;
+    height: auto;
+    padding: 12px 26px;
+    font-size: 14px;
+    color: var(--text);
+    transition: 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.top-btn.show{
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+.top-btn:hover{
+    transform: translateY(-4px);
+}
+
+/* =========================
+   社交按钮 / 头像 / Logo区域
+========================= */
+.bilibili-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 18px;
+    border-radius:999px;
+    text-decoration:none;
+    color:var(--text);
+    background:var(--card);
+    backdrop-filter:blur(12px);
+    transition:.3s;
+}
+.bilibili-btn:hover{
+    transform:translateY(-2px);
+    background:rgba(0,191,255,.15);
+}
+.bili-icon{
+    width:20px;
+    height:20px;
+    fill:currentColor;
+    flex-shrink: 0;
+}
+.bili-icon path {
+    fill: var(--text);
+}
+
+.circle-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--card);
+    backdrop-filter:blur(12px);
+    transition:.3s;
+     flex-shrink: 0; /* 禁止被挤压变形 */
+    padding: 0;
+}
+.circle-btn:hover{
+    background:rgba(255,0,0,.15);
+    transform:translateY(-2px);
+        opacity:0.85;
+}
+/* Youtube图标 限制尺寸，防止溢出撑错位 */
+.youtube-icon {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+.youtube-icon path{
+    fill: var(--text);
+}
+
+.logo-area, .right-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid rgba(255,255,255,.15);
+    box-shadow:0 0 20px rgba(255,255,255,.15);
+}
+
+
+/* =========================
+   移动端适配
+========================= */
+/* 汉堡按钮样式 */
+.hamburger-btn {
+  display: none;
+  width: 32px;
+  height: 24px;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-left: auto;
+  z-index:2000;
+  position:relative;
+}
+.hamburger-btn span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: var(--text);
+  border-radius: 2px;
+  position: absolute;
+  transition: all 0.3s ease;
+  left: 0;
+}
+.hamburger-btn span:nth-child(1) { top: 0; }
+.hamburger-btn span:nth-child(2) { top: 10px; }
+.hamburger-btn span:nth-child(3) { top: 20px; }
+
+/* 激活类：图标变叉号 */
+.hamburger-btn.active span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+.hamburger-btn.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger-btn.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(8px, -8px);
+}
+
+body.menu-open #app{
+
+    transform:scale(.96);
+    filter:blur(3px);
+
+    transition:.45s ease;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .right-actions{
+    display:none;
+}
+.hamburger-btn{
+
+    width:52px;
+    height:52px;
+
+    border-radius:50%;
+
+    background:var(--card);
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:center;
+    align-items:center;
+
+    gap:6px;
+
+    position:relative;
+}
+.hamburger-btn span{
+
+    position:static;   /* 取消 absolute */
+
+    width:22px;
+    height:3px;
+
+    border-radius:999px;
+
+    background:var(--text);
+}
+
+  .nav-links{
+
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    gap:50px;
+
+    opacity:0;
+    visibility:hidden;
+
+    transform:translateY(-20px);
+
+    transition:.45s ease;
+
+    z-index:999;
+
+    /* 核心 */
+    backdrop-filter:blur(35px);
+    -webkit-backdrop-filter:blur(35px);
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,245,250,.65),
+        rgba(240,240,255,.55),
+        rgba(220,235,255,.65)
+    );
+}
+
+.dark .nav-links{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(13,17,23,.85),
+        rgba(25,30,45,.75),
+        rgba(20,20,35,.85)
+    );
+}
+
+.nav-links.active{
+
+    opacity:1;
+    visibility:visible;
+
+    transform:none;
+}
+  .nav-links a{
+
+    width:220px;
+
+    padding:18px 0;
+
+    border-radius:50px;
+
+    background:rgba(255,255,255,.22);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.2);
+
+    text-align:center;
+
+    font-size:20px;
+
+    font-weight:700;
+}
+
+.dark .nav-links a{
+
+    background:rgba(255,255,255,.08);
+}
+
+.nav-links a:hover{
+
+    transform:translateY(-3px);
+
+    background:rgba(255,255,255,.5);
+}
+
+
+}
+
+.mobile-actions{
+
+    position:absolute;
+
+    left:24px;
+    bottom:24px;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    opacity:0;
+
+    transform:translateY(20px);
+
+    transition:.4s ease .15s;
+}
+
+.nav-links.active .mobile-actions{
+
+    opacity:1;
+
+    transform:none;
+}
+
+/* 隐藏原生复选框（JS方案不需要它） */
+#menu-toggle {
+  display: none !important;
+}
+
+@media(max-width:768px){
+    .navbar{
+        padding:14px 18px;
+    }
+    .hero{
+        text-align:center;
+    }
+    .hero-actions{
+        justify-content:center;
+    }
+    .hero-title{
+        font-size:4rem;
+    }
+    .section{
+        padding:80px 0;
+    }
+    .audio-card {
+        position: fixed !important;
+        left: 40px !important;
+        /* 紧贴屏幕最右侧，距离底部留出空间避开按钮 */
+        right: 0 !important;
+        bottom: 80px !important;
+        width: min(420px, calc(100vw - 10px));
+    }
+}
+
+/* =========================
+   平板设备专项优化（769px–1024px）
+   ========================= */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  .my-projects {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-wrap {
+    display: flex;
+    gap: 40px;
+    width: max-content;
+    min-width: 100%;
+    justify-content: flex-start; /* 关键：左对齐，这样滑动才能看到右边 */
+    padding: 20px 5%;
+    overflow-x: auto; /* 启用原生横向滚动 */
+    scroll-behavior: smooth;
+    cursor: grab;
+    
+    /* 隐藏滚动条 */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .project-wrap::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 其他样式保持不变... */
+  .about-grid,
+  .article-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .section {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .hero {
+    width: 90%;
+  }
+
+  .navbar {
+    padding: 0 4vw;
+  }
+
+  .card {
+    padding: 24px;
+  }
+  /* 1. 隐藏桌面端导航链接和右侧按钮 */
+  .nav-links {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: .45s ease;
+    z-index: 999;
+    backdrop-filter: blur(35px);
+    -webkit-backdrop-filter: blur(35px);
+    background: linear-gradient(135deg, rgba(255,245,250,.65), rgba(240,240,255,.55), rgba(220,235,255,.65));
+  }
+  
+  .dark .nav-links {
+    background: linear-gradient(135deg, rgba(13,17,23,.85), rgba(25,30,45,.75), rgba(20,20,35,.85));
+  }
+  
+  .nav-links.active {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  
+  /* 2. 导航链接样式 */
+  .nav-links a {
+    width: 280px; /* 平板端稍宽一些 */
+    padding: 20px 0;
+    border-radius: 50px;
+    background: rgba(255,255,255,.22);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.2);
+    text-align: center;
+    font-size: 22px; /* 平板端字体稍大 */
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    transition: .3s;
+  }
+  
+  .dark .nav-links a {
+    background: rgba(255,255,255,.08);
+  }
+  
+  .nav-links a:hover {
+    transform: translateY(-3px);
+    background: rgba(255,255,255,.5);
+  }
+  
+  /* 3. 隐藏桌面端右侧按钮 */
+  .right-actions {
+    display: none;
+  }
+  
+  /* 4. 汉堡菜单按钮 - 修复对齐 */
+.hamburger-btn {
+  display: flex;
+  width: 42px;              /* ✅ 和圆形按钮一样宽 */
+  height: 42px;             /* ✅ 和圆形按钮一样高 */
+  border-radius: 50%;       /* ✅ 变成正圆形 */
+  background: var(--card);  /* ✅ 背景色和其他按钮一致 */
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;                 /* ✅ 三条线的间距 */
+  position: relative;
+  z-index: 1001;
+  transition: .3s;
+  margin-left: auto;        /* ✅ 靠右对齐 */
+  box-shadow: var(--shadow); /* ✅ 加阴影，更像按钮 */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* 汉堡菜单的三条线 */
+.hamburger-btn span {
+  display: block;
+  width: 18px;              /* ✅ 线的长度 */
+  height: 2px;              /* ✅ 线的粗细 */
+  border-radius: 2px;
+  background: var(--text);  /* ✅ 线的颜色 */
+  transition: all 0.3s ease;
+}
+
+/* 点击后变成 X 的动画 */
+.hamburger-btn.active span:nth-child(1) {
+  transform: rotate(45deg) translate(4px, 4px);
+}
+.hamburger-btn.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger-btn.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(4px, -4px);
+}
+  
+  /* 5. 移动端操作按钮（在汉堡菜单底部） */
+  .mobile-actions {
+    position: absolute;
+    left: 24px;
+    bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: .4s ease .15s;
+  }
+  
+  .nav-links.active .mobile-actions {
+    opacity: 1;
+    transform: none;
+  }
+  
+ /* 6. 调整导航栏高度和间距 */
+.navbar {
+  height: 72px;             /* ✅ 固定高度，方便对齐 */
+  padding: 0 4vw;
+  display: flex;
+  align-items: center;      /* ✅ 垂直居中（关键！） */
+  justify-content: space-between; /* ✅ 左右分开 */
+}
+  .logo-area {
+    flex: 0; /* 不拉伸 */
+    display: flex;
+    align-items: center;
+  }
+   /* 7. 确保汉堡菜单按钮在右侧 */
+  .hamburger-btn {
+    order: 3; /* 确保在最后 */
+  }
+}
